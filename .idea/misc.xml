@@ -4,10 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/aminc/AndroidStudioProjects/ImageSearch/app/src/main/res/drawable/gradient.xml" value="0.1395" />
+        <entry key="..\:/Users/aminc/AndroidStudioProjects/ImageSearch/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1395" />
         <entry key="..\:/Users/aminc/AndroidStudioProjects/ImageSearch/app/src/main/res/layout/activity_main.xml" value="0.21574074074074073" />
         <entry key="..\:/Users/aminc/AndroidStudioProjects/ImageSearch/app/src/main/res/layout/fragment_gallery.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/aminc/AndroidStudioProjects/ImageSearch/app/src/main/res/layout/gallery_photo_item_layout.xml" value="0.21574074074074073" />
         <entry key="..\:/Users/aminc/AndroidStudioProjects/ImageSearch/app/src/main/res/layout/photo_load_state_item_layout.xml" value="0.12222222222222222" />
+        <entry key="..\:/Users/aminc/AndroidStudioProjects/ImageSearch/app/src/main/res/menu/gallery_menu.xml" value="0.36102564102564105" />
       </map>
     </option>
   </component>
