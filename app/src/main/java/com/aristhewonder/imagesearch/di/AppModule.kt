@@ -2,7 +2,7 @@ package com.aristhewonder.imagesearch.di
 
 import com.aristhewonder.imagesearch.BuildConfig
 import com.aristhewonder.imagesearch.data.ApiPath
-import com.aristhewonder.imagesearch.data.endpoint.ImageSearchApi
+import com.aristhewonder.imagesearch.data.endpoint.SearchApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,8 +42,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideImageSearchApi(retrofit: Retrofit): ImageSearchApi = with(retrofit) {
-        create(ImageSearchApi::class.java)
+    fun provideImageSearchApi(retrofit: Retrofit): SearchApi = with(retrofit) {
+        create(SearchApi::class.java)
     }
 
 }

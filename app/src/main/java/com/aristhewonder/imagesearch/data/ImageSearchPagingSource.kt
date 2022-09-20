@@ -3,12 +3,12 @@ package com.aristhewonder.imagesearch.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.aristhewonder.imagesearch.data.dto.Photo
-import com.aristhewonder.imagesearch.data.endpoint.ImageSearchApi
+import com.aristhewonder.imagesearch.data.endpoint.SearchApi
 import retrofit2.HttpException
 import java.io.IOException
 
 class ImageSearchPagingSource(
-    private val api: ImageSearchApi,
+    private val api: SearchApi,
     private val query: String
 ) : PagingSource<Int, Photo>() {
 
@@ -41,7 +41,10 @@ class ImageSearchPagingSource(
     }
 
     override fun getRefreshKey(state: PagingState<Int, Photo>): Int? {
-        TODO("Not yet implemented")
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
     }
 
     private fun getPreviousKey(currentPage: Int): Int? =

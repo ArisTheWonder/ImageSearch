@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ImageSearchResponse(
+data class SearchResponse(
 
 	@field:SerializedName("total")
 	val totalItems: Int,
