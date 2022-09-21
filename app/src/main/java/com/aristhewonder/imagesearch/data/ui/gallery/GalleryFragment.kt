@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.ConcatAdapter
 import com.aristhewonder.imagesearch.R
 import com.aristhewonder.imagesearch.data.ui.gallery.adapter.GalleryAdapter
 import com.aristhewonder.imagesearch.data.ui.gallery.adapter.PhotoLoadStateAdapter
@@ -34,7 +35,7 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
         super.onViewCreated(view, savedInstanceState)
         setBinding(view)
         setupMenu()
-        setupRecyclerView()
+        setupViews()
 
         viewModel.photos.observe(viewLifecycleOwner) { pagingData ->
             galleryAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
@@ -78,26 +79,37 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
         menuHos.addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun setupRecyclerView() {
-        binding.recyclerView.apply {
-            setHasFixedSize(true)
-            val onRetryClicked: () -> Unit = {
-                galleryAdapter.retry()
-            }
-            adapter = galleryAdapter.withLoadStateHeaderAndFooter(
-                header = PhotoLoadStateAdapter(onRetryClicked),
-                footer = PhotoLoadStateAdapter(onRetryClicked)
-            )
+    private fun setupViews() {
+        binding.apply {
 
-            galleryAdapter.addLoadStateListener { loadState ->
-                renderView()
+            recyclerView.apply {
+                setHasFixedSize(true)
+                adapter = configureAdapter(onLoadStateChanged = { loadState ->
+                    renderView(convertState(loadState))
+                })
             }
 
+            buttonRetry.setOnClickListener { galleryAdapter.retry() }
         }
     }
 
+    private fun configureAdapter(
+        onLoadStateChanged: (loadState: CombinedLoadStates) -> Unit
+    ): ConcatAdapter {
+        val onRetryClicked: () -> Unit = { galleryAdapter.retry() }
+
+        galleryAdapter.addLoadStateListener { loadState ->
+            onLoadStateChanged.invoke(loadState)
+        }
+
+        return galleryAdapter.withLoadStateHeaderAndFooter(
+            header = PhotoLoadStateAdapter(onRetryClicked),
+            footer = PhotoLoadStateAdapter(onRetryClicked)
+        )
+    }
+
     private fun convertState(loadState: CombinedLoadStates): PhotoGalleryState {
-        return when (loadState) {
+        return when (loadState.source.refresh) {
             is LoadState.Loading -> PhotoGalleryState.Loading
             is LoadState.NotLoading -> {
                 if (loadState.append.endOfPaginationReached && galleryAdapter.itemCount == 0)
@@ -109,29 +121,22 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
         }
     }
 
-    private fun renderView(loadState: CombinedLoadStates) {
-
+    private fun renderView(state: PhotoGalleryState) {
         binding.apply {
-            with(loadState.source.refresh) {
-                val state =
-
-                progressBar.isVisible = this is LoadState.Loading
-                recyclerView.isVisible = this is LoadState.NotLoading
-                buttonRetry.isVisible = this is LoadState.Error
-                textViewError.isVisible = this is LoadState.Error
-
-                if (this is LoadState.NotLoading && loadState.append.endOfPaginationReached && galleryAdapter.itemCount == 0) {
-
-                }
+            with(state) {
+                progressBar.isVisible = this is PhotoGalleryState.Loading
+                recyclerView.isVisible = this is PhotoGalleryState.Data
+                buttonRetry.isVisible = this is PhotoGalleryState.Error
+                textViewError.isVisible = this is PhotoGalleryState.Error
+                textViewEmpty.isVisible = this is PhotoGalleryState.Empty
             }
         }
-
     }
 
     sealed class PhotoGalleryState {
-        object Loading: PhotoGalleryState()
-        object Error:PhotoGalleryState()
-        object Data:PhotoGalleryState()
-        object Empty:PhotoGalleryState()
+        object Loading : PhotoGalleryState()
+        object Error : PhotoGalleryState()
+        object Data : PhotoGalleryState()
+        object Empty : PhotoGalleryState()
     }
 }
