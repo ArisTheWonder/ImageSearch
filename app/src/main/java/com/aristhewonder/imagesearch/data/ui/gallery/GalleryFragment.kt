@@ -9,13 +9,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import com.aristhewonder.imagesearch.R
+import com.aristhewonder.imagesearch.data.ui.BaseFragment
 import com.aristhewonder.imagesearch.data.ui.gallery.adapter.GalleryAdapter
 import com.aristhewonder.imagesearch.data.ui.gallery.adapter.PhotoLoadStateAdapter
 import com.aristhewonder.imagesearch.databinding.FragmentGalleryBinding
@@ -23,17 +24,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class GalleryFragment : Fragment(R.layout.fragment_gallery) {
+class GalleryFragment : BaseFragment<FragmentGalleryBinding>(R.layout.fragment_gallery) {
 
     private val viewModel by viewModels<GalleryViewModel>()
-    private lateinit var binding: FragmentGalleryBinding
 
     @Inject
     lateinit var galleryAdapter: GalleryAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setBinding(view)
         setupMenu()
         setupViews()
 
@@ -43,8 +42,8 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
 
     }
 
-    private fun setBinding(view: View) {
-        binding = FragmentGalleryBinding.bind(view)
+    override fun getBinding(view: View): FragmentGalleryBinding {
+        return FragmentGalleryBinding.bind(view)
     }
 
     private fun setupMenu() {
@@ -98,6 +97,11 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
     ): ConcatAdapter {
         val onRetryClicked: () -> Unit = { galleryAdapter.retry() }
 
+        galleryAdapter.setOnItemClick { photo ->
+            findNavController().navigate(
+                GalleryFragmentDirections.actionGalleryFragmentToDetailFragment(photo)
+            )
+        }
         galleryAdapter.addLoadStateListener { loadState ->
             onLoadStateChanged.invoke(loadState)
         }
@@ -139,4 +143,5 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
         object Data : PhotoGalleryState()
         object Empty : PhotoGalleryState()
     }
+
 }

@@ -17,6 +17,8 @@ class GalleryAdapter @Inject constructor(
     diffUtilItemCallback
 ) {
 
+    private var itemClickListener: ((photo: Photo) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
         val binding = GalleryPhotoItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -33,11 +35,25 @@ class GalleryAdapter @Inject constructor(
         }
     }
 
+    fun setOnItemClick(itemClick: (photo: Photo) -> Unit) {
+        this.itemClickListener = itemClick
+    }
+
     inner class GalleryViewHolder(private val binding: GalleryPhotoItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(photo: Photo) {
             binding.apply {
+
+                itemClickListener?.let { callback ->
+                    root.setOnClickListener {
+                        val position = bindingAdapterPosition
+                        if (position != RecyclerView.NO_POSITION) {
+                            callback.invoke(photo)
+                        }
+                    }
+                }
+
                 Glide.with(itemView.context)
                     .load(photo.urls.regular)
                     .centerCrop()

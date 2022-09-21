@@ -8,17 +8,17 @@ import kotlinx.parcelize.Parcelize
 data class Links(
 
 	@field:SerializedName("self")
-	val self: String,
+	val self: String?,
 
 	@field:SerializedName("html")
-	val html: String,
+	val html: String?,
 
 	@field:SerializedName("photos")
-	val photos: String,
+	val photos: String?,
 
 	@field:SerializedName("likes")
-	val likes: String,
+	val likes: String?,
 
 	@field:SerializedName("download")
-	val download: String
+	val download: String?
 ): Parcelable
