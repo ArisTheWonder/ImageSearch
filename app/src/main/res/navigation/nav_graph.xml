@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/galleryFragment"
-        android:name="com.aristhewonder.imagesearch.data.ui.gallery.GalleryFragment"
+        android:name="com.aristhewonder.imagesearch.ui.gallery.GalleryFragment"
         android:label="GalleryFragment" >
         <action
             android:id="@+id/action_galleryFragment_to_detailFragment"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.aristhewonder.imagesearch.data.ui.gallery.DetailFragment"
+        android:name="com.aristhewonder.imagesearch.ui.gallery.DetailFragment"
         android:label="DetailFragment" >
         <argument
             android:name="photo"

@@ -1,4 +1,4 @@
-package com.aristhewonder.imagesearch.data.ui.gallery
+package com.aristhewonder.imagesearch.ui.gallery
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

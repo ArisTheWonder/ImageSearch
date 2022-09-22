@@ -1,4 +1,4 @@
-package com.aristhewonder.imagesearch.data.ui.gallery.adapter
+package com.aristhewonder.imagesearch.ui.gallery.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.aristhewonder.imagesearch.data.dto.Photo

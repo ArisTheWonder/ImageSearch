@@ -1,12 +1,11 @@
-package com.aristhewonder.imagesearch.data.ui
+package com.aristhewonder.imagesearch.ui
 
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.aristhewonder.imagesearch.util.requireAppCompatActivity
+import com.aristhewonder.imagesearch.util.extension.requireAppCompatActivity
 
 abstract class BaseFragment<V : ViewBinding>(@LayoutRes layoutResID: Int) : Fragment(layoutResID) {
 

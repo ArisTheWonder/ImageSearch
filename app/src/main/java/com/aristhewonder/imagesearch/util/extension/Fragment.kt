@@ -1,4 +1,4 @@
-package com.aristhewonder.imagesearch.util
+package com.aristhewonder.imagesearch.util.extension
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
